@@ -4,6 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:id="@+id/root"
+    android:orientation="vertical"
     tools:context=".MainActivity">
 
 
@@ -33,5 +35,13 @@
 
 
     </RelativeLayout>
+
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="animate dialog"
+        android:layout_gravity="center_horizontal"
+        android:id="@+id/btn_dialog"/>
 
 </LinearLayout>

@@ -8,6 +8,8 @@ import android.os.Handler;
 import android.os.Looper;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
+import android.widget.LinearLayout;
 
 import com.example.viewpagertimer.animation.CubeOutDepthTransformation;
 import com.example.viewpagertimer.viewpager.ViewPagerCustomDuration;
@@ -27,12 +29,19 @@ public class MainActivity extends AppCompatActivity {
     int sliderCurrentPosition =0;
     int totalSize = 0;
     List<String> list = new ArrayList<>();
+    
+    Button btn_dialog;
+    LinearLayout root;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        btn_dialog = findViewById(R.id.btn_dialog);
+        root = findViewById(R.id.root);
+
+        
         viewpager = findViewById(R.id.viewpager);
         indicator = findViewById(R.id.indicator);
 
@@ -69,7 +78,31 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
+        
+        
+        btn_dialog.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                showAnimatedDialog();
+            }
+        });
 
+    }
+
+    private void showAnimatedDialog() {
+
+        DialogFactory dialog = new DialogFactory(this);
+        dialog.createAnimateDialog(new DialogFactory.DialogFactoryInteraction() {
+            @Override
+            public void onAcceptButtonClicked(String... strings) {
+
+            }
+
+            @Override
+            public void onDeniedButtonClicked(boolean cancel_dialog) {
+
+            }
+        } , root);
     }
 
 
