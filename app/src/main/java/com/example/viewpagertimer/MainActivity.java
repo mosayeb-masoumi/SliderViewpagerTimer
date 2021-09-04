@@ -1,19 +1,15 @@
 package com.example.viewpagertimer;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.content.res.ResourcesCompat;
 import androidx.viewpager.widget.ViewPager;
 
-import android.graphics.Typeface;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.util.Log;
 import android.view.View;
 
-import com.example.viewpagertimer.animation.CubeInDepthTransformation;
-import com.example.viewpagertimer.animation.FadeTransformation;
-import com.example.viewpagertimer.animation.PopTransformation;
+import com.example.viewpagertimer.animation.CubeOutDepthTransformation;
 import com.example.viewpagertimer.viewpager.ViewPagerCustomDuration;
 
 
@@ -28,22 +24,19 @@ public class MainActivity extends AppCompatActivity {
 
     CircleIndicator indicator;
     ViewPagerCustomDuration viewpager;
-
-
-    int sliderCurrentPosition = 0;
-    int sliderListSize = 0;
+    int sliderCurrentPosition =0;
+    int totalSize = 0;
+    List<String> list = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-
         viewpager = findViewById(R.id.viewpager);
         indicator = findViewById(R.id.indicator);
 
 
-        List<String> list = new ArrayList<>();
         list.add("tab0");
         list.add("tab1");
         list.add("tab2");
@@ -53,11 +46,10 @@ public class MainActivity extends AppCompatActivity {
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager(), list);
         viewpager.setAdapter(adapter);
         indicator.setViewPager(viewpager);
-        viewpager.setPageTransformer(true, new CubeInDepthTransformation());
+      viewpager.setPageTransformer(true, new CubeOutDepthTransformation()); // to set animation
+        totalSize = list.size();
 
 
-        sliderListSize = list.size();
-        sliderCurrentPosition = 0;
 
 
         viewpager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
@@ -69,46 +61,43 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onPageSelected(int position) {
-//                sliderCurrentPosition = position;
-
 
             }
 
             @Override
             public void onPageScrollStateChanged(int state) {
 
-                Log.i("TAG", "onPageScrollStateChanged: ");
             }
         });
 
     }
 
-    final Handler sliderHandler = new Handler(Looper.getMainLooper());
 
+    final Handler sliderHandler = new Handler(Looper.getMainLooper());
     private void startSliderTimer() {
 
-        if (sliderHandler != null) {
+        if(sliderHandler != null){
             // to stop counting
             sliderHandler.removeCallbacksAndMessages(null);
         }
 
-        if (sliderCurrentPosition < sliderListSize - 1) {
+        if(sliderCurrentPosition < totalSize - 1){
             sliderCurrentPosition++;
-        } else {
+        }else{
             sliderCurrentPosition = 0;
         }
 
         sliderHandler.postDelayed(() -> {
             // here you check the value of getActivity() and break up if needed
-            if (this == null)
+            if (MainActivity.this == null)
                 return;
-            this.runOnUiThread(() -> {
+            MainActivity.this.runOnUiThread(() -> {
 
                 if (sliderCurrentPosition == 0) {
                     Log.i("TAG", "run: ");
                     viewpager.setScrollDurationFactor(0.0);
                 } else {
-                    viewpager.setScrollDurationFactor(8);
+                    viewpager.setScrollDurationFactor(3);
                 }
 
 
